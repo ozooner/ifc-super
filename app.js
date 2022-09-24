@@ -18,7 +18,7 @@ import {
     disposeBoundsTree
 } from 'three-mesh-bvh';
 
-console.log("V5")
+console.log("V6")
 
 let scene, threeCanvas, camera;
 
@@ -159,6 +159,7 @@ const ifc = ifcLoader.ifcManager;
 let highlightModel = { id: - 1};
 
 function highlight(event, material, model) {
+  console.log("HIGHLIGHT click")
     const found = cast(event)[0];
     if (found) {
 
@@ -193,11 +194,14 @@ function highlight(event, material, model) {
         }
         var serialized = JSON.stringify(event);
         console.log(serialized)
-        window.ReactNativeWebView.postMessage(serialized);
+        if(window.ReactNativeWebView){
+          window.ReactNativeWebView.postMessage(serialized);
+        }
         });
 
       }
       catch(e){
+        console.log("Error when sending message:")
         console.log(e)
       }
     } else {
