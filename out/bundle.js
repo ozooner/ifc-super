@@ -95244,7 +95244,8 @@ function disposeBoundsTree() {
 
 }
 
-let scene, threeCanvas, camera;
+let scene, threeCanvas, camera, selectedModelId, selectedId;
+
 
 const initScene = () => {
   //Creates the Three.js scene
@@ -95379,6 +95380,13 @@ const mat = new MeshLambertMaterial({
   depthTest: false
 });
 
+const matEdited = new MeshLambertMaterial({
+  transparent: true,
+  opacity: 0.6,
+  color: 0xFFA500,
+  depthTest: false
+});
+
 const ifc = ifcLoader.ifcManager;
 // Reference to the previous selection
 let highlightModel = { id: - 1};
@@ -95410,6 +95418,9 @@ function highlight(event, material, model) {
       scene: scene,
       removePrevious: true
     });
+    selectedModelId = model.id;
+    selectedId = id;
+    setTimeout(colorYellow, 3000);
     try{
       ifc.getItemProperties(modelID, id, false).then((iprops) => {
         if(iprops){
@@ -95435,11 +95446,20 @@ function highlight(event, material, model) {
       console.log("Error when sending message:");
       console.log(e);
     }
-  } else {
-    // Remove previous highlight
-    ifc.removeSubset(model.id, scene, material);
   }
 }
+
+function colorYellow(){
+  //ifc.removeSubset(selectedModelId, scene, mat);
+  ifcLoader.ifcManager.createSubset({
+    modelID: selectedModelId,
+    ids: [selectedId],
+    material: matEdited,
+    scene: scene,
+    //removePrevious: true
+  });
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(function(){

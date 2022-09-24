@@ -19,7 +19,9 @@ import {
 } from 'three-mesh-bvh';
 
 
-let scene, threeCanvas, camera;
+let scene, threeCanvas, camera, selectedModelId, selectedId;
+let removePrevious = true;
+
 
 const initScene = () => {
   //Creates the Three.js scene
@@ -154,6 +156,13 @@ const mat = new MeshLambertMaterial({
   depthTest: false
 })
 
+const matEdited = new MeshLambertMaterial({
+  transparent: true,
+  opacity: 0.6,
+  color: 0xFFA500,
+  depthTest: false
+})
+
 const ifc = ifcLoader.ifcManager;
 // Reference to the previous selection
 let highlightModel = { id: - 1};
@@ -183,8 +192,11 @@ function highlight(event, material, model) {
       ids: [id],
       material: material,
       scene: scene,
-      removePrevious: true
+      removePrevious: removePrevious;
     })
+    removePrevious = true;
+    selectedModelId = model.id;
+    selectedId = id;
     try{
       ifc.getItemProperties(modelID, id, false).then((iprops) => {
         if(iprops){
@@ -215,6 +227,19 @@ function highlight(event, material, model) {
     ifc.removeSubset(model.id, scene, material);
   }
 }
+
+function colorYellow(){
+  ifc.removeSubset(selectedModelId, scene, mat);
+  ifcLoader.ifcManager.createSubset({
+    modelID: selectedModelId,
+    ids: [selectedId],
+    material: matEdited,
+    scene: scene,
+    removePrevious: true
+  });
+  removePrevious = false;
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(function(){
