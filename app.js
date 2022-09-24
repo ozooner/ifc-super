@@ -216,7 +216,7 @@ function highlight(event, material, model) {
   }
 }
 
-addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
   setTimeout(function(){
     initScene();
     initLoader();
@@ -225,8 +225,7 @@ addEventListener('DOMContentLoaded', () => {
     //addEventListener('touchend', (event) => highlight(event, mat, highlightModel));
     //addEventListener('touchcancel', (event) => highlight(event, mat, highlightModel));
     //addEventListener('touchmove', (event) => highlight(event, mat, highlightModel));
-    //addEventListener('click', (event) => highlight(event, mat, highlightModel));
-    addEventListener('click', (event) => {alert("PEDE")});
+    document.addEventListener('click', (event) => highlight(event, mat, highlightModel));
     //addEventListener('tap', (event) => highlight(event, mat, highlightModel));
   }, 500);
 });
