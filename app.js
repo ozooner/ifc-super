@@ -95,7 +95,10 @@ const initLoader = () => {
    "change",
    (changed) => {
      const ifcURL = URL.createObjectURL(changed.target.files[0]);
-     ifcLoader.load(ifcURL, (ifcModel) => scene.add(ifcModel));
+     ifcLoader.load(ifcURL, (ifcModel) => {
+      scene.add(ifcModel);
+       ifcModels.push(ifcModel)
+     });
    },
    false
  );
@@ -155,8 +158,7 @@ const ifc = ifcLoader.ifcManager;
 // Reference to the previous selection
 let highlightModel = { id: - 1};
 
-function highlight(event, material, model) {
-  console.log("HIGHLIGHT CALL!", event.type)
+async function highlight(event, material, model) {
     const found = cast(event)[0];
     if (found) {
 
@@ -166,7 +168,14 @@ function highlight(event, material, model) {
         // Gets Express ID
         const index = found.faceIndex;
         const geometry = found.object.geometry;
+
         const id = ifc.getExpressId(geometry, index);
+        const modelID = found.object.modelID;
+
+        const iprops = await ifc.getItemProperties(modelID, id, false);
+        const clickedName = iprops.ObjectType.value;
+        //const tprops = await ifc.getTypeProperties(modelID, id, false);
+        console.log(`Clicked on ${clickedName}`);
 
         // Creates subset
         ifcLoader.ifcManager.createSubset({
@@ -179,9 +188,11 @@ function highlight(event, material, model) {
       try{
         var event = {
           type: 'click',
-          data: found
+          element: clickedName,
+          data: iprops,
         }
         var serialized = JSON.stringify(event);
+        console.log(serialized)
         window.ReactNativeWebView.postMessage(serialized);
       }
       catch(e){
@@ -204,4 +215,4 @@ addEventListener('DOMContentLoaded', () => {
 
 initScene();
 initLoader();
-autoLoad();
+//autoLoad();
