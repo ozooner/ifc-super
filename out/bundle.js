@@ -95382,6 +95382,7 @@ const ifc = ifcLoader.ifcManager;
 let highlightModel = { id: - 1};
 
 function highlight(event, material, model) {
+  console.log("HIGHLIGHT CALL!", event.type);
     const found = cast(event)[0];
     if (found) {
 
@@ -95418,9 +95419,14 @@ function highlight(event, material, model) {
     }
 }
 
-addEventListener('touchstart', (event) => highlight(event, mat, highlightModel));
-addEventListener('click', (event) => highlight(event, mat, highlightModel));
-addEventListener('tap', (event) => highlight(event, mat, highlightModel));
+addEventListener('DOMContentLoaded', () => {
+  addEventListener('touchstart', (event) => highlight(event, mat, highlightModel));
+  addEventListener('touchend', (event) => highlight(event, mat, highlightModel));
+  addEventListener('touchcancel', (event) => highlight(event, mat, highlightModel));
+  addEventListener('touchmove', (event) => highlight(event, mat, highlightModel));
+  addEventListener('click', (event) => highlight(event, mat, highlightModel));
+  addEventListener('tap', (event) => highlight(event, mat, highlightModel));
+});
 
 initScene();
 initLoader();
