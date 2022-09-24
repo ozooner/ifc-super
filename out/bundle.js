@@ -95329,6 +95329,13 @@ const initLoader = () => {
    false
  );
 };
+
+const autoLoad = () =>{
+  ifcLoader.load("01.ifc", (ifcModel) => {
+      ifcModels.push(ifcModel);
+      scene.add(ifcModel);
+  });
+};
 //Sets up the IFC loading
 const ifcModels = [];
 const ifcLoader = new IFCLoader();
@@ -95434,4 +95441,4 @@ addEventListener('DOMContentLoaded', () => {
 
 initScene();
 initLoader();
-//autoLoad();
+autoLoad();

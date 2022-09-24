@@ -215,4 +215,4 @@ addEventListener('DOMContentLoaded', () => {
 
 initScene();
 initLoader();
-//autoLoad();
+autoLoad();
