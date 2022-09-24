@@ -18,7 +18,6 @@ import {
   disposeBoundsTree
 } from 'three-mesh-bvh';
 
-console.log("V6")
 
 let scene, threeCanvas, camera;
 
@@ -226,6 +225,8 @@ addEventListener('DOMContentLoaded', () => {
   addEventListener('tap', (event) => highlight(event, mat, highlightModel));
 })
 
-initScene();
-initLoader();
-autoLoad();
+setTimeout(function(){
+  initScene();
+  initLoader();
+  autoLoad();
+}, 1000)

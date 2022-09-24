@@ -4,6 +4,12 @@ var replaceHtmlVars = require('rollup-plugin-replace-html-vars')
 
 var isWatching = process.argv.indexOf('-w') > -1;
 
+var revision = require('child_process')
+  .execSync('git rev-parse HEAD')
+  .toString().trim()
+
+console.log("REV", revision)
+
 export default {
   input: './app.js',
   output: [

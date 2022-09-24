@@ -95244,8 +95244,6 @@ function disposeBoundsTree() {
 
 }
 
-console.log("V6");
-
 let scene, threeCanvas, camera;
 
 const initScene = () => {
@@ -95452,6 +95450,8 @@ addEventListener('DOMContentLoaded', () => {
   addEventListener('tap', (event) => highlight(event, mat, highlightModel));
 });
 
-initScene();
-initLoader();
-autoLoad();
+setTimeout(function(){
+  initScene();
+  initLoader();
+  autoLoad();
+}, 1000);
