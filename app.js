@@ -158,7 +158,7 @@ const ifc = ifcLoader.ifcManager;
 // Reference to the previous selection
 let highlightModel = { id: - 1};
 
-async function highlight(event, material, model) {
+function highlight(event, material, model) {
     const found = cast(event)[0];
     if (found) {
 
@@ -172,10 +172,8 @@ async function highlight(event, material, model) {
         const id = ifc.getExpressId(geometry, index);
         const modelID = found.object.modelID;
 
-        const iprops = await ifc.getItemProperties(modelID, id, false);
-        const clickedName = iprops.ObjectType.value;
         //const tprops = await ifc.getTypeProperties(modelID, id, false);
-        console.log(`Clicked on ${clickedName}`);
+        //console.log(`Clicked on ${clickedName}`);
 
         // Creates subset
         ifcLoader.ifcManager.createSubset({
@@ -186,6 +184,8 @@ async function highlight(event, material, model) {
             removePrevious: true
         })
       try{
+        ifc.getItemProperties(modelID, id, false).then((iprops) => {
+        const clickedName = iprops.ObjectType.value;
         var event = {
           type: 'click',
           element: clickedName,
@@ -194,6 +194,8 @@ async function highlight(event, material, model) {
         var serialized = JSON.stringify(event);
         console.log(serialized)
         window.ReactNativeWebView.postMessage(serialized);
+        });
+
       }
       catch(e){
         console.log(e)
