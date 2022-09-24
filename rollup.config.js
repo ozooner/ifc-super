@@ -1,4 +1,6 @@
 import resolve from '@rollup/plugin-node-resolve';
+import copy from 'rollup-plugin-copy';
+
 var browserSync = require("browser-sync");
 var replaceHtmlVars = require('rollup-plugin-replace-html-vars')
 
@@ -20,10 +22,13 @@ export default {
   ],
   plugins: [
     resolve(),
-    replaceHtmlVars({
-        files: 'out/index.html',
-        from: /bundle.js\?v=\d+/g,
-        to: 'bundle.js?v=' + Date.now(),
+    copy({
+      targets: [
+        {src: "index.html", dest: './out', transform: (contents) => {
+          return contents.toString().replace('__REVISION__', revision).replace(/__TIMESTAMP__/g, Date.now());
+        }},
+      ],
+      verbose: true
     }),
     (isWatching && browserSync({server: "./out", files: "./out"}))
   ]
