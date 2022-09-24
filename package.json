@@ -12,7 +12,8 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^20.0.0",
     "@rollup/plugin-node-resolve": "^13.0.2",
-    "rollup": "^2.45.2"
+    "rollup": "^2.45.2",
+    "rollup-plugin-replace-html-vars": "^1.0.3"
   },
   "dependencies": {
     "browser-sync": "^2.27.10",
