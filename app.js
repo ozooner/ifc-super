@@ -107,10 +107,11 @@ const initLoader = () => {
 
 const autoLoad = () =>{
   //ifcLoader.load("01.ifc", (ifcModel) => {
-  ifcLoader.load("SuperIFC.ifc", (ifcModel) => {
-    ifcModels.push(ifcModel);
-    scene.add(ifcModel)
-  });
+  // console.log("🦀 Loading")
+  // ifcLoader.load("SuperIFCV2.ifc", (ifcModel) => {
+  //   ifcModels.push(ifcModel);
+  //   scene.add(ifcModel)
+  // });
 }
 //Sets up the IFC loading
 const ifcModels = [];
@@ -192,7 +193,7 @@ function highlight(event, material, model) {
       ids: [id],
       material: material,
       scene: scene,
-      removePrevious: removePrevious;
+      removePrevious: removePrevious
     })
     removePrevious = true;
     selectedModelId = model.id;
@@ -228,7 +229,7 @@ function highlight(event, material, model) {
   }
 }
 
-function colorYellow(){
+window.colorYellow = function () {
   ifc.removeSubset(selectedModelId, scene, mat);
   ifcLoader.ifcManager.createSubset({
     modelID: selectedModelId,

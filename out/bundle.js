@@ -95245,6 +95245,7 @@ function disposeBoundsTree() {
 }
 
 let scene, threeCanvas, camera, selectedModelId, selectedId;
+let removePrevious = true;
 
 
 const initScene = () => {
@@ -95328,14 +95329,6 @@ const initLoader = () => {
     false
   );
 };
-
-const autoLoad = () =>{
-  //ifcLoader.load("01.ifc", (ifcModel) => {
-  ifcLoader.load("SuperIFC.ifc", (ifcModel) => {
-    ifcModels.push(ifcModel);
-    scene.add(ifcModel);
-  });
-};
 //Sets up the IFC loading
 const ifcModels = [];
 const ifcLoader = new IFCLoader();
@@ -95416,11 +95409,11 @@ function highlight(event, material, model) {
       ids: [id],
       material: material,
       scene: scene,
-      removePrevious: true
+      removePrevious: removePrevious
     });
+    removePrevious = true;
     selectedModelId = model.id;
     selectedId = id;
-    setTimeout(colorYellow, 3000);
     try{
       ifc.getItemProperties(modelID, id, false).then((iprops) => {
         if(iprops){
@@ -95446,26 +95439,29 @@ function highlight(event, material, model) {
       console.log("Error when sending message:");
       console.log(e);
     }
+  } else {
+    // Remove previous highlight
+    ifc.removeSubset(model.id, scene, material);
   }
 }
 
-function colorYellow(){
-  //ifc.removeSubset(selectedModelId, scene, mat);
+window.colorYellow = function () {
+  ifc.removeSubset(selectedModelId, scene, mat);
   ifcLoader.ifcManager.createSubset({
     modelID: selectedModelId,
     ids: [selectedId],
     material: matEdited,
     scene: scene,
-    //removePrevious: true
+    removePrevious: true
   });
-}
+  removePrevious = false;
+};
 
 
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(function(){
     initScene();
     initLoader();
-    autoLoad();
     //addEventListener('touchstart', (event) => highlight(event, mat, highlightModel));
     //addEventListener('touchend', (event) => highlight(event, mat, highlightModel));
     //addEventListener('touchcancel', (event) => highlight(event, mat, highlightModel));
