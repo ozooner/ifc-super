@@ -191,5 +191,6 @@ function highlight(event, material, model) {
     }
 }
 
-window.onclick = (event) => highlight(event, mat, highlightModel);
+addEventListener('touchstart', (event) => highlight(event, mat, highlightModel));
+addEventListener('click', (event) => highlight(event, mat, highlightModel));
 
