@@ -95321,7 +95321,6 @@ const initLoader = () => {
       const ifcURL = URL.createObjectURL(changed.target.files[0]);
       ifcLoader.load(ifcURL, (ifcModel) => {
         scene.add(ifcModel);
-        ifcModels.push(ifcModel);
       });
     },
     false
@@ -95331,12 +95330,9 @@ const initLoader = () => {
 const autoLoad = () =>{
   //ifcLoader.load("01.ifc", (ifcModel) => {
   ifcLoader.load("SuperIFC.ifc", (ifcModel) => {
-    ifcModels.push(ifcModel);
     scene.add(ifcModel);
   });
 };
-//Sets up the IFC loading
-const ifcModels = [];
 const ifcLoader = new IFCLoader();
 ifcLoader.ifcManager.setWasmPath("../../../");
 
@@ -95349,108 +95345,29 @@ ifcLoader.ifcManager.setupThreeMeshBVH(
 
 const raycaster = new Raycaster();
 raycaster.firstHitOnly = true;
-const mouse = new Vector2();
-
-function cast(event) {
-
-  // Computes the position of the mouse on the screen
-  const bounds = threeCanvas.getBoundingClientRect();
-
-  const x1 = event.clientX - bounds.left;
-  const x2 = bounds.right - bounds.left;
-  mouse.x = (x1 / x2) * 2 - 1;
-
-  const y1 = event.clientY - bounds.top;
-  const y2 = bounds.bottom - bounds.top;
-  mouse.y = -(y1 / y2) * 2 + 1;
-
-  // Places it on the camera pointing to the mouse
-  raycaster.setFromCamera(mouse, camera);
-
-  // Casts a ray
-  return raycaster.intersectObjects(ifcModels);
-}
+new Vector2();
 
 // Creates subset material
-const mat = new MeshLambertMaterial({
+new MeshLambertMaterial({
   transparent: true,
   opacity: 0.6,
   color: 0xff88ff,
   depthTest: false
 });
 
-const ifc = ifcLoader.ifcManager;
-// Reference to the previous selection
-let highlightModel = { id: - 1};
-
-function highlight(event, material, model) {
-  console.log("HIGHLIGHT click: " + event.type);
-  const found = cast(event)[0];
-  if (found) {
-    console.log("Found clicked element: " + found);
-
-    // Gets model ID
-    model.id = found.object.modelID;
-
-    // Gets Express ID
-    const index = found.faceIndex;
-    const geometry = found.object.geometry;
-
-    const id = ifc.getExpressId(geometry, index);
-    const modelID = found.object.modelID;
-
-    //const tprops = await ifc.getTypeProperties(modelID, id, false);
-    //console.log(`Clicked on ${clickedName}`);
-
-    // Creates subset
-    ifcLoader.ifcManager.createSubset({
-      modelID: model.id,
-      ids: [id],
-      material: material,
-      scene: scene,
-      removePrevious: true
-    });
-    try{
-      ifc.getItemProperties(modelID, id, false).then((iprops) => {
-        if(iprops){
-          const clickedName = iprops.ObjectType.value;
-          var event = {
-            type: 'click',
-            element: clickedName,
-            data: iprops,
-          };
-          var serialized = JSON.stringify(event);
-          console.log(serialized);
-          if(window.ReactNativeWebView){
-            window.ReactNativeWebView.postMessage(serialized);
-          }
-        }
-        else {
-          console.log("Clicked element does not have properties set!");
-        }
-      });
-
-    }
-    catch(e){
-      console.log("Error when sending message:");
-      console.log(e);
-    }
-  } else {
-    // Remove previous highlight
-    ifc.removeSubset(model.id, scene, material);
-  }
-}
+ifcLoader.ifcManager;
 
 addEventListener('DOMContentLoaded', () => {
   setTimeout(function(){
     initScene();
     initLoader();
     autoLoad();
-    addEventListener('touchstart', (event) => highlight(event, mat, highlightModel));
-    addEventListener('touchend', (event) => highlight(event, mat, highlightModel));
-    addEventListener('touchcancel', (event) => highlight(event, mat, highlightModel));
-    addEventListener('touchmove', (event) => highlight(event, mat, highlightModel));
-    addEventListener('click', (event) => highlight(event, mat, highlightModel));
-    addEventListener('tap', (event) => highlight(event, mat, highlightModel));
-  }, 5000);
+    //addEventListener('touchstart', (event) => highlight(event, mat, highlightModel));
+    //addEventListener('touchend', (event) => highlight(event, mat, highlightModel));
+    //addEventListener('touchcancel', (event) => highlight(event, mat, highlightModel));
+    //addEventListener('touchmove', (event) => highlight(event, mat, highlightModel));
+    //addEventListener('click', (event) => highlight(event, mat, highlightModel));
+    addEventListener('click', (event) => {alert("PEDE");});
+    //addEventListener('tap', (event) => highlight(event, mat, highlightModel));
+  }, 500);
 });
