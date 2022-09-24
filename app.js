@@ -18,7 +18,7 @@ import {
     disposeBoundsTree
 } from 'three-mesh-bvh';
 
-console.log("V4")
+console.log("V5")
 
 let scene, threeCanvas, camera;
 
