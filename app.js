@@ -18,6 +18,8 @@ import {
     disposeBoundsTree
 } from 'three-mesh-bvh';
 
+console.log("V3")
+
 let scene, threeCanvas, camera;
 
 function initScene(){

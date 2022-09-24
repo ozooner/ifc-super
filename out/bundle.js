@@ -95244,6 +95244,8 @@ function disposeBoundsTree() {
 
 }
 
+console.log("V3");
+
 let scene, threeCanvas, camera;
 
 function initScene(){
