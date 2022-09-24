@@ -95244,11 +95244,11 @@ function disposeBoundsTree() {
 
 }
 
-console.log("V3");
+console.log("V4");
 
 let scene, threeCanvas, camera;
 
-function initScene(){
+const initScene = () => {
   //Creates the Three.js scene
   scene = new Scene();
   
@@ -95312,9 +95312,9 @@ function initScene(){
       camera.updateProjectionMatrix();
       renderer.setSize(size.width, size.height);
   });
-}
+};
 
-function initLoader(){
+const initLoader = () => {
   initScene();
   const input = document.getElementById("file-input");
  input.addEventListener(
@@ -95325,19 +95325,18 @@ function initLoader(){
    },
    false
  );
-}
+};
 
-initScene();
-initLoader();
-
+const autoLoad = () =>{
+  ifcLoader.load("01.ifc", (ifcModel) => {
+      ifcModels.push(ifcModel);
+      scene.add(ifcModel);
+  });
+};
 //Sets up the IFC loading
 const ifcModels = [];
 const ifcLoader = new IFCLoader();
 ifcLoader.ifcManager.setWasmPath("../../../");
-ifcLoader.load("01.ifc", (ifcModel) => {
-    ifcModels.push(ifcModel);
-    scene.add(ifcModel);
-});
 
 
 // Sets up optimized picking
@@ -95421,3 +95420,8 @@ function highlight(event, material, model) {
 
 addEventListener('touchstart', (event) => highlight(event, mat, highlightModel));
 addEventListener('click', (event) => highlight(event, mat, highlightModel));
+addEventListener('tap', (event) => highlight(event, mat, highlightModel));
+
+initScene();
+initLoader();
+autoLoad();
