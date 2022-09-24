@@ -217,22 +217,15 @@ function highlight(event, material, model) {
 }
 
 addEventListener('DOMContentLoaded', () => {
-  //addEventListener('touchstart', (event) => highlight(event, mat, highlightModel));
-  //addEventListener('touchend', (event) => highlight(event, mat, highlightModel));
-  //addEventListener('touchcancel', (event) => highlight(event, mat, highlightModel));
-  //addEventListener('touchmove', (event) => highlight(event, mat, highlightModel));
-  //addEventListener('click', (event) => highlight(event, mat, highlightModel));
-  //addEventListener('tap', (event) => highlight(event, mat, highlightModel));
-})
-
-setTimeout(function(){
-  addEventListener('touchstart', (event) => highlight(event, mat, highlightModel));
-  addEventListener('touchend', (event) => highlight(event, mat, highlightModel));
-  addEventListener('touchcancel', (event) => highlight(event, mat, highlightModel));
-  addEventListener('touchmove', (event) => highlight(event, mat, highlightModel));
-  addEventListener('click', (event) => highlight(event, mat, highlightModel));
-  addEventListener('tap', (event) => highlight(event, mat, highlightModel));
-  initScene();
-  initLoader();
-  autoLoad();
-}, 1000)
+  setTimeout(function(){
+    initScene();
+    initLoader();
+    autoLoad();
+    addEventListener('touchstart', (event) => highlight(event, mat, highlightModel));
+    addEventListener('touchend', (event) => highlight(event, mat, highlightModel));
+    addEventListener('touchcancel', (event) => highlight(event, mat, highlightModel));
+    addEventListener('touchmove', (event) => highlight(event, mat, highlightModel));
+    addEventListener('click', (event) => highlight(event, mat, highlightModel));
+    addEventListener('tap', (event) => highlight(event, mat, highlightModel));
+  }, 5000);
+});
