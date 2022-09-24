@@ -95331,7 +95331,8 @@ const initLoader = () => {
 };
 
 const autoLoad = () =>{
-  ifcLoader.load("01.ifc", (ifcModel) => {
+  //ifcLoader.load("01.ifc", (ifcModel) => {
+  ifcLoader.load("SuperIFC.ifc", (ifcModel) => {
       ifcModels.push(ifcModel);
       scene.add(ifcModel);
   });
